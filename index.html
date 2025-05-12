@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function getComputerChoice()
+        {
+            let rand = Math.floor(Math.random() * 3)
+            
+            if(rand == 0)
+                return "rock";
+
+            else if(rand == 1)
+                return "paper";
+
+            else
+                return "scissors";
+        }
+
+        function getHumanChoice()
+        {
+            let sign = prompt("What's your choice?")
+            sign = sign.toLowerCase();
+            return sign;
+        }
+
+        function playRound(humanChoice, computerChoice)
+        {
+
+            if ((humanChoice == "rock" && computerChoice == "rock") || (humanChoice == "paper" && computerChoice == "paper") || (humanChoice == "scissors" && computerChoice == "scissors"))
+            {
+                console.log(`It's a DRAW! you both chose ${humanChoice}`);
+                return 'd';
+            }
+
+            else if ((humanChoice == "rock" && computerChoice == "scissors") || (humanChoice == "paper" && computerChoice == "rock") || (humanChoice == "scissors" && computerChoice == "paper"))
+            {
+                console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+                return 'h';
+            }
+            
+            else
+            {
+                console.log(`You loose! ${computerChoice} beats ${humanChoice}`);
+                return 'c';
+            }      
+  } 
+
+        function playGame()
+        {
+            let computerScore = 0;
+            let humanScore = 0;
+            
+            for(let i=0; i<5; i++)
+            {   
+                const humanSelection = getHumanChoice();
+                const computerSelection = getComputerChoice();
+
+                let result = playRound(humanSelection, computerSelection);
+                if(result == 'h')
+                    humanScore++;
+                else if(result == 'c')
+                    computerScore++;
+            }
+
+            if(computerScore > humanScore)
+                console.log(`You lose! You : ${humanScore} | computer : ${computerScore}`);
+            else
+                console.log(`You Win! You : ${humanScore} | computer : ${computerScore}`);
+        }
+        
+        playGame();
+
+    </script>
+</body>
+</html>
