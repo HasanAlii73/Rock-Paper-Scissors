@@ -1,80 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+
+    <div class="btns">
+        <button id="rock">ROCK🪨</button>
+        <button id="paper">PAPER📃</button>
+        <button id="scissors">SCISSORS✂️</button>
+
+    </div>
+    <div class="results">
+
+    </div>
+
     <script>
-        function getComputerChoice()
-        {
+
+        function getComputerChoice() {
             let rand = Math.floor(Math.random() * 3)
-            
-            if(rand == 0)
+
+            if (rand == 0)
                 return "rock";
 
-            else if(rand == 1)
+            else if (rand == 1)
                 return "paper";
 
             else
                 return "scissors";
         }
 
-        function getHumanChoice()
-        {
+        function getHumanChoice() {
             let sign = prompt("What's your choice?")
             sign = sign.toLowerCase();
             return sign;
         }
 
-        function playRound(humanChoice, computerChoice)
-        {
+        function playRound(humanChoice, computerChoice) {
 
-            if ((humanChoice == "rock" && computerChoice == "rock") || (humanChoice == "paper" && computerChoice == "paper") || (humanChoice == "scissors" && computerChoice == "scissors"))
-            {
-                console.log(`It's a DRAW! you both chose ${humanChoice}`);
+            if ((humanChoice == "rock" && computerChoice == "rock") || (humanChoice == "paper" && computerChoice == "paper") || (humanChoice == "scissors" && computerChoice == "scissors")) {
+                const initResult = document.createElement("p");
+                initResult.classList.add("initResult");
+                initResult.textContent = `It's a DRAW! you both chose ${humanChoice}`;
+                result.appendChild(initResult);
                 return 'd';
             }
 
-            else if ((humanChoice == "rock" && computerChoice == "scissors") || (humanChoice == "paper" && computerChoice == "rock") || (humanChoice == "scissors" && computerChoice == "paper"))
-            {
-                console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+            else if ((humanChoice == "rock" && computerChoice == "scissors") || (humanChoice == "paper" && computerChoice == "rock") || (humanChoice == "scissors" && computerChoice == "paper")) {
+                const initResult = document.createElement("p");
+                initResult.classList.add("initResult");
+                initResult.textContent = `You win! ${humanChoice} beats ${computerChoice}`;
+                result.appendChild(initResult);
                 return 'h';
             }
-            
-            else
-            {
-                console.log(`You loose! ${computerChoice} beats ${humanChoice}`);
+
+            else {
+                const initResult = document.createElement("p");
+                initResult.classList.add("initResult");
+                initResult.textContent = `You loose! ${computerChoice} beats ${humanChoice}`;
+                result.appendChild(initResult);
                 return 'c';
-            }      
-  } 
+            }
+        }
 
-        function playGame()
-        {
-            let computerScore = 0;
-            let humanScore = 0;
-            
-            for(let i=0; i<5; i++)
-            {   
-                const humanSelection = getHumanChoice();
-                const computerSelection = getComputerChoice();
+        function changeScore(computer, human) {
+            score.textContent = `You : ${humanScore} | computer : ${computerScore}`;
 
-                let result = playRound(humanSelection, computerSelection);
-                if(result == 'h')
-                    humanScore++;
-                else if(result == 'c')
-                    computerScore++;
+            if (humanScore === 5 || computerScore === 5) {
+
+                if (computerScore > humanScore) {
+                    const finalResult = document.createElement("p");
+                    finalResult.classList.add("finalResult");
+                    finalResult.textContent = `You lose! You : ${humanScore} | computer : ${computerScore}`;
+                    finalResult.style.color = "red";
+                    finalResult.style.fontSize = "26px";
+                    result.appendChild(finalResult);
+                    humanScore = 0;
+                    computerScore = 0;
+                }
+
+                else {
+                    const finalResult = document.createElement("p");
+                    finalResult.classList.add("finalResult");
+                    finalResult.textContent = `You Win! You : ${humanScore} | computer : ${computerScore}`;
+                    finalResult.style.color = "green";
+                    finalResult.style.fontSize = "26px";
+                    result.appendChild(finalResult);
+                    humanScore = 0;
+                    computerScore = 0;
+                }
+
+            }
+        }
+
+        let computerScore = 0;
+        let humanScore = 0;
+
+
+        const result = document.querySelector(".results");
+
+        const score = document.createElement("p");
+        score.classList.add("score");
+        score.textContent = `You : ${humanScore} | computer : ${computerScore}`;
+        result.appendChild(score);
+
+        let btns = document.querySelector(".btns");
+        btns.addEventListener('click', (e) => {
+            let target = e.target
+
+            let res = '';
+            switch (target.id) {
+                case 'rock':
+                    res = playRound('rock', getComputerChoice());
+                    break;
+
+                case 'paper':
+                    res = playRound('paper', getComputerChoice());
+                    break;
+
+                case 'scissors':
+                    res = playRound('scissors', getComputerChoice());
+                    break;
             }
 
-            if(computerScore > humanScore)
-                console.log(`You lose! You : ${humanScore} | computer : ${computerScore}`);
-            else
-                console.log(`You Win! You : ${humanScore} | computer : ${computerScore}`);
-        }
-        
-        playGame();
+            if (res === 'h')
+                humanScore++;
+            else if (res === 'c')
+                computerScore++;
+
+            changeScore(computerScore, humanScore);
+        })
 
     </script>
 </body>
+
 </html>
